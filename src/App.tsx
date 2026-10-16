@@ -455,6 +455,56 @@ function AppPolishStyles() {
         animation: mf-device-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
+      .phone-frame {
+        width: min(100%, 1180px);
+      }
+
+      @media (min-width: 768px) {
+        .app-shell {
+          padding-inline: clamp(24px, 4vw, 72px) !important;
+          padding-block: 32px !important;
+        }
+
+        .app-stage {
+          min-height: calc(100vh - 64px) !important;
+        }
+
+        .phone-frame {
+          height: min(900px, calc(100vh - 64px)) !important;
+          min-height: 0;
+          width: 100% !important;
+          max-width: 1180px;
+          border-radius: 28px !important;
+          background: transparent !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+        }
+
+        .phone-frame > div:first-child {
+          display: none;
+        }
+
+        .phone-frame > div:last-child {
+          height: 100%;
+          border: 1px solid rgba(8, 36, 61, 0.10);
+          border-radius: 28px !important;
+          box-shadow: 0 24px 70px rgba(16, 35, 63, 0.14);
+        }
+      }
+
+      @media (max-width: 767px) {
+        .app-stage {
+          width: 100%;
+        }
+
+        .phone-frame {
+          box-sizing: border-box;
+          flex: 0 1 430px;
+          width: 100% !important;
+          max-width: 430px;
+        }
+      }
+
       .app-ui {
         font-family: "Plus Jakarta Sans", "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         letter-spacing: -0.01em;
@@ -1380,7 +1430,7 @@ function PhoneFrame({
   contentClassName?: string;
 }) {
   return (
-    <div className="relative h-[860px] w-[430px] rounded-[44px] bg-black p-[9px] shadow-[0_24px_70px_rgba(0,0,0,0.25)]">
+    <div className="phone-frame relative h-[860px] w-[430px] rounded-[44px] bg-black p-[9px] shadow-[0_24px_70px_rgba(0,0,0,0.25)]">
       <div className="absolute left-1/2 top-[22px] z-20 h-[30px] w-[126px] -translate-x-1/2 rounded-full bg-black" />
 
       <div className="h-full overflow-hidden rounded-[36px] bg-[#FCFEFF]">
