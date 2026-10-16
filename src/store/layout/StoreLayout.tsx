@@ -10,6 +10,18 @@ type StoreLayoutProps = {
 
 export default function StoreLayout({ children, activePage = "Dashboard", onNavigate }: StoreLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = (page: StorePage) => {
+    if (onNavigate) {
+      onNavigate(page);
+      return;
+    }
+
+    const basePath = window.location.pathname.startsWith("/multife-local")
+      ? "/multife-local"
+      : "";
+    const route = page === "Products" ? "/store/products" : "/store";
+    window.location.assign(`${basePath}${route}`);
+  };
 
   return (
     <div className="store-theme flex min-h-screen bg-[#F8FCFF] text-[#08243D]">
@@ -59,7 +71,7 @@ export default function StoreLayout({ children, activePage = "Dashboard", onNavi
         .store-theme [class*="bg-red-50"] { background-color: #FFF0EF !important; }
         .store-theme input::placeholder { color: var(--store-muted); }
       `}</style>
-      <StoreSidebar activePage={activePage} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavigate={onNavigate} />
+      <StoreSidebar activePage={activePage} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavigate={navigate} />
       <div className="flex min-w-0 flex-1 flex-col">
         <StoreNavbar storeName="Al-Rehman Fabrics" onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1">{children}</main>

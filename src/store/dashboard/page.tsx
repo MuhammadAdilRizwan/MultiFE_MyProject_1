@@ -60,6 +60,12 @@ function ProductRow({ product }: { product: Product }) {
 
 export default function StoreDashboardPage() {
   const [modal, setModal] = useState<string | null>(null);
+  const openAddProduct = () => {
+    const basePath = window.location.pathname.startsWith("/multife-local")
+      ? "/multife-local"
+      : "";
+    window.location.assign(`${basePath}/store/products/add`);
+  };
 
   return (
     <StoreLayout>
@@ -71,7 +77,7 @@ export default function StoreDashboardPage() {
             <p className="mt-2 text-sm text-slate-500">Manage your products, orders, and custom clothing experience.</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button icon={<Plus className="h-4 w-4" />} onClick={() => setModal("Add Product")}>Add Product</Button>
+            <Button icon={<Plus className="h-4 w-4" />} onClick={openAddProduct}>Add Product</Button>
             <Button variant="secondary" icon={<Plus className="h-4 w-4" />} onClick={() => setModal("Add Template")}>Add Template</Button>
           </div>
         </div>
