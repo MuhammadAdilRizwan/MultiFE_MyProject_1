@@ -872,6 +872,48 @@ function AppPolishStyles() {
         filter: none !important;
       }
 
+      .app-ui.welcome-screen-content {
+        padding-top: 16px !important;
+        padding-bottom: 16px !important;
+      }
+
+      .app-ui .welcome-hero {
+        height: 250px !important;
+        margin-top: 8px !important;
+      }
+
+      .app-ui .welcome-tagline {
+        margin-top: 0 !important;
+      }
+
+      .app-ui .welcome-qr-card {
+        margin-top: 16px !important;
+        padding-block: 12px !important;
+      }
+
+      .app-ui .welcome-qr-card .qr-image-shell {
+        width: 124px !important;
+        height: 124px !important;
+        min-width: 124px !important;
+        max-width: 124px !important;
+      }
+
+      .app-ui .welcome-qr-card .welcome-qr-image {
+        max-width: 108px !important;
+        max-height: 108px !important;
+      }
+
+      @media (max-width: 767px) {
+        .welcome-phone-frame {
+          height: auto !important;
+        }
+
+        .welcome-phone-frame > div:last-child,
+        .welcome-phone-frame .welcome-screen-content {
+          height: auto !important;
+        }
+      }
+
       @media (max-width: 390px) {
         .app-ui .qr-start-card .qr-image-shell {
           width: 132px !important;
@@ -1425,12 +1467,14 @@ function App() {
 function PhoneFrame({
   children,
   contentClassName = "px-8 pb-7 pt-20",
+  frameClassName = "",
 }: {
   children: ReactNode;
   contentClassName?: string;
+  frameClassName?: string;
 }) {
   return (
-    <div className="phone-frame relative h-[860px] w-[430px] rounded-[44px] bg-black p-[9px] shadow-[0_24px_70px_rgba(0,0,0,0.25)]">
+    <div className={`phone-frame relative h-[860px] w-[430px] rounded-[44px] bg-black p-[9px] shadow-[0_24px_70px_rgba(0,0,0,0.25)] ${frameClassName}`}>
       <div className="absolute left-1/2 top-[22px] z-20 h-[30px] w-[126px] -translate-x-1/2 rounded-full bg-black" />
 
       <div className="h-full overflow-hidden rounded-[36px] bg-[#FCFEFF]">
@@ -1481,14 +1525,17 @@ function CompactBrandHeader() {
 
 function WelcomeScreen({ onNext }: { onNext: () => void }) {
   return (
-    <PhoneFrame>
+    <PhoneFrame
+      frameClassName="welcome-phone-frame"
+      contentClassName="welcome-screen-content px-8 pb-4 pt-4"
+    >
       <div className="flex items-center justify-end">
         <Globe2 className="h-7 w-7 text-[#14213D]" strokeWidth={1.6} />
       </div>
 
       <BrandHeader />
 
-      <div className="relative mt-3 flex h-[340px] justify-center overflow-hidden">
+      <div className="welcome-hero relative mt-3 flex h-[340px] justify-center overflow-hidden">
         <img
           src="/assets/login-screen.png"
           alt="Cream embroidered eastern outfit"
@@ -1496,7 +1543,7 @@ function WelcomeScreen({ onNext }: { onNext: () => void }) {
         />
       </div>
 
-      <div className="-mt-1 text-center">
+      <div className="welcome-tagline -mt-1 text-center">
         <h2
           className="text-[21px] font-semibold tracking-wide text-[#14213D]"
           style={{ fontFamily: '"DM Serif Display", serif' }}
@@ -1514,7 +1561,7 @@ function WelcomeScreen({ onNext }: { onNext: () => void }) {
       <button
         type="button"
         onClick={onNext}
-        className="qr-start-card relative mt-7 w-full overflow-hidden rounded-[22px] border border-[#DDEBF2] bg-white px-4 py-4 text-left shadow-[0_12px_30px_rgba(6,27,58,0.08)] transition hover:scale-[1.01]"
+        className="qr-start-card welcome-qr-card relative mt-7 w-full overflow-hidden rounded-[22px] border border-[#DDEBF2] bg-white px-4 py-4 text-left shadow-[0_12px_30px_rgba(6,27,58,0.08)] transition hover:scale-[1.01]"
       >
         <div className="pointer-events-none absolute left-4 top-4 h-7 w-7 border-l-2 border-t-2 border-[#15A9D6]" />
         <div className="pointer-events-none absolute bottom-4 right-4 h-7 w-7 border-b-2 border-r-2 border-[#15A9D6]" />
