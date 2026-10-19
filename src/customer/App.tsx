@@ -346,7 +346,9 @@ function warmImage(src?: string) {
 function warmImagesSmoothly(sources: Array<string | undefined>) {
   if (typeof window === "undefined") return;
 
-  const uniqueSources = sources.filter((src): src is string => Boolean(src) && !warmedImageCache.has(src));
+  const uniqueSources = sources.filter(
+    (src): src is string => typeof src === "string" && src.length > 0 && !warmedImageCache.has(src)
+  );
   if (!uniqueSources.length) return;
 
   let index = 0;
@@ -394,6 +396,10 @@ function useSmoothImageWarmup(screen: Screen, selectedFabric: FabricItem, select
         `${import.meta.env.BASE_URL}assets/first-page-qr-code-page.png`,
         `${import.meta.env.BASE_URL}assets/page-2-workflow-shopkeeper-assistance.png`
       );
+    }
+
+    if (screen === "bodyScannerStart") {
+      warmupSources.push(`${import.meta.env.BASE_URL}assets/page-3-measurement.png`);
     }
 
     if (screen === "assisted" || screen === "bodyScannerStart" || screen === "bodyScannerMeasure" || screen === "fabric" || screen === "fabricDetail") {
@@ -1723,8 +1729,8 @@ function BodyScannerStartScreen({
           <div className="absolute bottom-7 right-7 h-9 w-9 border-b-2 border-r-2 border-[#F26A21]" />
 
           <img
-            src="/assets/login-screen.png"
-            alt="Standing model scanner guide"
+            src={`${import.meta.env.BASE_URL}assets/page-3-measurement.png`}
+            alt="Customer measurement scanning guide"
             className="relative z-10 mx-auto h-full w-[72%] object-contain object-center"
             loading="eager"
             decoding="async"
@@ -3889,49 +3895,6 @@ function CustomizationAppBar({ onBack }: { onBack: () => void }) {
   );
 }
 
-function DecorativeTitleLine() {
-  return (
-    <div className="mt-2 flex items-center gap-2">
-      <span className="h-px w-10 bg-[#15A9D6] text-white" />
-      <span className="text-[12px] text-[#15A9D6]">✧</span>
-      <span className="h-px w-10 bg-[#15A9D6] text-white" />
-    </div>
-  );
-}
-
-function LargeImagePlaceholder({
-  label = "Image Placeholder",
-  imageSrc,
-}: {
-  label?: string;
-  imageSrc?: string;
-}) {
-  return (
-    <div className="relative flex h-[158px] w-[132px] shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-[#DDEBF2] bg-[#F6FCFF] shadow-[0_10px_22px_rgba(6,27,58,0.06)]">
-      {imageSrc ? (
-        <SafeAssetImage
-          src={imageSrc}
-          alt={label}
-          fallbackLabel={label}
-          fallbackClassName="h-[158px]"
-          className="h-full w-full object-cover object-center"
-        />
-      ) : (
-        <>
-          <div className="absolute inset-3 rounded-[14px] border border-dashed border-[#15A9D6]/45 bg-white/70" />
-          <span className="absolute left-5 top-6 h-px w-20 rounded-full bg-[#14213D]/25" />
-          <span className="absolute left-[43px] top-10 h-20 w-px rotate-[8deg] rounded-full bg-[#14213D]/22" />
-          <span className="absolute right-[43px] top-10 h-20 w-px rotate-[-8deg] rounded-full bg-[#14213D]/22" />
-          <span className="absolute bottom-10 h-px w-16 rounded-full bg-[#15A9D6]/45 text-white" />
-          <p className="relative mt-20 px-4 text-center text-[7px] font-bold uppercase tracking-[0.13em] text-[#748596]">
-            {label}
-          </p>
-        </>
-      )}
-    </div>
-  );
-}
-
 function SmallImagePlaceholder({ compact = false }: { compact?: boolean }) {
   return (
     <div
@@ -4069,9 +4032,6 @@ function CustomizationFlowScreen({
   onBack,
   onSave,
   buttonText,
-  hero = false,
-  heroImageSrc,
-  heroLabel = "Image Placeholder",
   infoText,
 }: {
   title: string;
@@ -4080,9 +4040,6 @@ function CustomizationFlowScreen({
   onBack: () => void;
   onSave: () => void;
   buttonText: string;
-  hero?: boolean;
-  heroImageSrc?: string;
-  heroLabel?: string;
   infoText?: string;
 }) {
   const [selected, setSelected] = useState<Record<string, string>>(() => {
@@ -4184,9 +4141,6 @@ function ForearmCustomizationScreen({ onBack, onSave }: { onBack: () => void; on
       title="Forearm Customization"
       subtitle="Refine the lower sleeve shape and fit."
       buttonText="Save Forearm Settings"
-      hero
-      heroImageSrc="/assets/forearm-preview.png"
-      heroLabel="Forearm Preview"
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4241,9 +4195,6 @@ function SleeveEndCuffScreen({ onBack, onSave }: { onBack: () => void; onSave: (
       title="Sleeve End / Cuff"
       subtitle="Choose how the sleeve finishes."
       buttonText="Save Cuff Selection"
-      hero
-      heroImageSrc="/assets/cuff-preview.png"
-      heroLabel="Cuff Preview"
       onBack={onBack}
       onSave={onSave}
       infoText="The cuff finish enhances both style and comfort. You can preview your selection in the next step."
@@ -4299,9 +4250,6 @@ function FullSleeveStyleScreen({ onBack, onSave }: { onBack: () => void; onSave:
       title="Full Sleeve Style"
       subtitle="Select the overall sleeve design."
       buttonText="Save Sleeve Style"
-      hero
-      heroImageSrc="/assets/full-sleeve-preview.png"
-      heroLabel="Full Sleeve Preview"
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4517,7 +4465,6 @@ function DamanChaakHemScreen({ onBack, onSave }: { onBack: () => void; onSave: (
       title="Daman / Chaak / Hem"
       subtitle="Customize the lower hem and slit details."
       buttonText="Save Hem Details"
-      hero
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4559,7 +4506,6 @@ function LaceEmbroideryBorderScreen({ onBack, onSave }: { onBack: () => void; on
       title="Lace / Embroidery / Border"
       subtitle="Select finishing details for your outfit."
       buttonText="Save Finishing Details"
-      hero
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4695,7 +4641,6 @@ function BodyFitCustomizationScreen({ onBack, onSave }: { onBack: () => void; on
       title="Body Fit Customization"
       subtitle="Adjust the outfit fit before lower-wear details."
       buttonText="Save Body Fit Settings"
-      hero
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4772,7 +4717,6 @@ function ThighKneeCustomizationScreen({ onBack, onSave }: { onBack: () => void; 
       title="Thigh / Knee Customization"
       subtitle="Adjust the thigh and knee shape of your lower garment."
       buttonText="Save Thigh & Knee Settings"
-      hero
       onBack={onBack}
       onSave={onSave}
       groups={[
@@ -4850,7 +4794,6 @@ function PainchaLowerLegScreen({ onBack, onSave }: { onBack: () => void; onSave:
       title="Paincha / Lower Leg Customization"
       subtitle="Refine the lower leg opening and finish of your bottom wear."
       buttonText="Save Paincha Settings"
-      hero
       onBack={onBack}
       onSave={onSave}
       groups={[
