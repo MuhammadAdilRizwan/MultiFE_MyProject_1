@@ -389,6 +389,13 @@ function useSmoothImageWarmup(screen: Screen, selectedFabric: FabricItem, select
       );
     }
 
+    if (screen === "assisted") {
+      warmupSources.push(
+        `${import.meta.env.BASE_URL}assets/first-page-qr-code-page.png`,
+        `${import.meta.env.BASE_URL}assets/page-2-workflow-shopkeeper-assistance.png`
+      );
+    }
+
     if (screen === "assisted" || screen === "bodyScannerStart" || screen === "bodyScannerMeasure" || screen === "fabric" || screen === "fabricDetail") {
       warmupSources.push(...fabrics.slice(0, 10).map((fabric) => fabric.imageSrc));
     }
@@ -1637,15 +1644,15 @@ function AssistedScreen({
 
       <div className="relative mt-4 flex h-[260px] justify-center overflow-hidden">
         <img
-          src="/assets/screen-02.png"
-          alt="Shop assisted ordering outfit visual"
+          src={`${import.meta.env.BASE_URL}assets/first-page-qr-code-page.png`}
+          alt="Woman wearing a cream embroidered eastern outfit"
           className="h-full w-full object-contain object-center"
         />
       </div>
 
       <div className="mt-5 overflow-hidden rounded-[20px] border border-[#DDEBF2] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <img
-          src="/assets/screen-02-workflow.png"
+          src={`${import.meta.env.BASE_URL}assets/page-2-workflow-shopkeeper-assistance.png`}
           alt="Shopkeeper Assistance workflow"
           className="block w-full object-contain"
         />
