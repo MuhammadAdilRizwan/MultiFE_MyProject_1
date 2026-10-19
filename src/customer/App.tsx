@@ -382,7 +382,7 @@ function useSmoothImageWarmup(screen: Screen, selectedFabric: FabricItem, select
 
     if (screen === "welcome" || screen === "bodyScannerStart" || screen === "bodyScannerMeasure") {
       warmupSources.push(
-        "/assets/login-screen.png",
+        `${import.meta.env.BASE_URL}assets/first-page-qr-code-page.png`,
         "/assets/qr-code.png",
         "/assets/screen-02.png",
         "/assets/screen-02-workflow.png"
@@ -1537,8 +1537,8 @@ function WelcomeScreen({ onNext }: { onNext: () => void }) {
 
       <div className="welcome-hero relative mt-3 flex h-[340px] justify-center overflow-hidden">
         <img
-          src="/assets/login-screen.png"
-          alt="Cream embroidered eastern outfit"
+          src={`${import.meta.env.BASE_URL}assets/first-page-qr-code-page.png`}
+          alt="Woman wearing a cream embroidered eastern outfit"
           className="h-full w-full object-contain object-center"
         />
       </div>
